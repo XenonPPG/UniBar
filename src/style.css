@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+:root {
+    --primary: #d5d5d5;
+    --secondary: #262626;
+    --bg: #0a0a0a;
+}
+
+@theme{
+    --color-primary: var(--primary);
+    --color-secondary: var(--secondary);
+    --color-bg: var(--bg);
+}
+
+@layer base {
+    html {
+        @apply text-primary;
+        font-family: 'JB', serif;
+    }
+}
+
+body {
+    background-color: var(--bg);
+}
+
+@utility flex-center {
+    @apply flex justify-center items-center;
+}
+
+@font-face {
+    font-family: 'JB';
+    src: url("@/assets/JetBrainsMono-Regular.ttf");
+}

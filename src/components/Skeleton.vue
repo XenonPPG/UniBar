@@ -1,0 +1,7 @@
+<script setup lang="ts">
+
+</script>
+
+<template>
+<div class="bg-secondary animate-pulse rounded-md"/>
+</template>
