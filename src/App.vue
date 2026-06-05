@@ -7,7 +7,7 @@ const CHARACTERS = ['𝄀', '𝄁', '𝄂', '𝄃']
 const MAX_LENGTH = 25;
 
 const length = ref(10);
-const includeSpaces = ref(true  );
+const includeSpaces = ref(true);
 const barcode = ref(generateBarcode());
 const notification = ref(false);
 let notificationTimeout: any = null;
@@ -48,25 +48,30 @@ watch(includeSpaces, () => {
 
 <template>
   <div class="flex size-full min-h-screen">
-    <div class="p-5 flex flex-1 flex-col justify-between">
+    <div class="p-3 md:p-5 flex flex-1 flex-col justify-between overflow-x-hidden">
       <header class="w-min group">
-        <h1 class="text-5xl group-hover:animate-bounce">UniBar</h1>
+        <h1 class="text-4xl md:text-5xl group-hover:animate-bounce">UniBar</h1>
       </header>
 
-      <div class="size-full flex-center flex-col gap-5">
+      <div class="size-full flex-center flex-col gap-5 py-6">
         <p class="text-secondary">length: {{ length }}</p>
-        <div class="flex">
+
+        <div class="flex w-full justify-center px-2 min-h-35"
+             :style="{ fontSize: `min(150px, calc(220vw / ${length}))` }">
           <p v-for="(ch, index) in [...barcode]"
              :key="index"
-             class="text-[150px] mx-0.5 border-b-4 border-secondary select-none"
-             :class="{'w-10':ch === ' '}"
-             style="font-family: serif">
+             class="border-b-2 md:border-b-4 border-secondary select-none leading-none flex items-end"
+             :style="{
+               fontFamily: 'serif',
+               margin: '0 0.02em',
+               width: ch === ' ' ? '0.25em' : 'auto'
+             }">
             {{ ch }}
           </p>
         </div>
 
-        <div class="flex flex-col gap-2">
-          <div class="flex-center gap-2">
+        <div class="flex flex-col gap-4">
+          <div class="flex-center flex-wrap gap-2">
             <Button variant="secondary" @click="length--" :disabled="length === 1">
               <SafeIcon icon="radix-icons:minus" class="size-8 text-2xl"/>
             </Button>
@@ -77,8 +82,8 @@ watch(includeSpaces, () => {
               <SafeIcon icon="radix-icons:reload"
                         class="size-8 text-2xl group-hover:rotate-90 transition-transform duration-500"/>
             </Button>
-            <Button class="flex-center gap-2 text-2xl w-max" @click="copyToClipboard">
-              <SafeIcon icon="radix-icons:copy" class="size-8 text-2xl"/>
+            <Button class="flex-center gap-2 text-xl md:text-2xl w-max px-4 py-2" @click="copyToClipboard">
+              <SafeIcon icon="radix-icons:copy" class="size-6 md:size-8 text-xl md:text-2xl"/>
               <span>Copy</span>
             </Button>
           </div>
@@ -89,26 +94,26 @@ watch(includeSpaces, () => {
                 type="checkbox"
                 id="include-spaces"
                 class="size-5 appearance-none rounded bg-bg border border-secondary checked:bg-secondary relative checked:after:content-[''] checked:after:absolute checked:after:left-1.5 checked:after:top-0.5 checked:after:w-1.5 checked:after:h-2.75 checked:after:border-r-2 checked:after:border-b-2 checked:after:border-white checked:after:rotate-45">
-            <label for="include-spaces" class="text-xl select-none">Include spaces</label>
+            <label for="include-spaces" class="text-lg md:text-xl select-none">Include spaces</label>
           </div>
         </div>
       </div>
 
-      <footer class="flex-center justify-between">
+      <footer class="flex flex-col md:flex-row items-center md:justify-between gap-6 md:gap-2">
         <a href="https://github.com/XenonPPG/UniBar" target="_blank"
            class="flex-center gap-2 size-min text-secondary select-none hover:cursor-pointer hover:text-primary transition-colors">
-          <SafeIcon icon="radix-icons:github-logo" class="size-7"/>
-          <span class="text-xl">GitHub</span>
+          <SafeIcon icon="radix-icons:github-logo" class="size-6 md:size-7"/>
+          <span class="text-lg md:text-xl">GitHub</span>
         </a>
 
-        <div class="flex text-secondary text-sm gap-2">
+        <div class="flex flex-col md:flex-row text-secondary text-xs md:text-sm gap-2 text-center md:text-left">
           <p>[WARNING]</p>
 
-          <div class="flex flex-col">
+          <div class="flex flex-col gap-1 md:gap-0">
             <div v-for="phrase in [
                 'Produced barcodes are not real and cannot be scanned',
                 'Unicode doesn\'t provide enough characters for real barcodes'
-            ]" class="flex gap-2 justify-between w-full">
+            ]" class="flex flex-wrap md:flex-nowrap gap-x-1 md:gap-x-2 justify-center md:justify-between w-full">
               <span v-for="word in phrase.split(' ')">
                 {{ word }}
               </span>
@@ -119,9 +124,8 @@ watch(includeSpaces, () => {
     </div>
   </div>
 
-  <!-- notification -->
-  <div class="fixed top-5 left-1/2 -translate-x-1/2 select-none opacity-0 transition-opacity duration-500"
+  <div class="fixed top-20 left-1/2 -translate-x-1/2 select-none opacity-0 transition-opacity duration-500"
        :class="{'opacity-100':notification}">
-    <p class="text-xl p-2 px-5 rounded-[100px] border-3 border-secondary bg-secondary/20">Copied</p>
+    <p class="text-lg md:text-xl p-2 px-5 rounded-[100px] border-3 border-secondary bg-secondary/20">Copied</p>
   </div>
 </template>
